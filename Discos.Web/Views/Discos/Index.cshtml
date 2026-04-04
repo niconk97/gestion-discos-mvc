@@ -1,0 +1,75 @@
+@model IEnumerable<Discos.Dominio.Disco>
+
+@{
+    ViewData["Title"] = "Listado de Discos";
+}
+
+<h1>Discos</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">Agregar Nuevo</a>
+</p>
+<p>
+    <form asp-action="Index" method="get">
+        <input type="text" class="form-control" name="filtro" value="@ViewBag.Filtro" placeholder="Búsqueda por título ..." />
+        <button type="submit" class="btn btn-outline-success">Buscar</button>
+        <a class="btn btn-outline-secondary" asp-action="Index">Limpiar</a>
+    </form>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Titulo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CantidadCanciones)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaLanzamiento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UrlTapa)
+            </th>
+            <th>
+                Estilo
+            </th>
+            <th>
+                Tipo de Edición
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Titulo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CantidadCanciones)
+            </td>
+            <td>
+                @(item.FechaLanzamiento == DateTime.MinValue
+                    ? "Sin fecha"
+                    : item.FechaLanzamiento.ToString("dd/MM/yyyy"))
+            </td>
+            <td>
+                <img src="@item.UrlTapa" alt="@item.Titulo" style="max-width: 100px; max-height: 100px;" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Estilo.Descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoEdicion.Descripcion)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary">Modificar</a> |
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-success">Detalle</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Eliminar</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
