@@ -7,12 +7,24 @@ namespace Discos.Web.Controllers;
 
 public class DiscosController : Controller
 {
+    private readonly DiscoNegocio discoNegocio;
+    private readonly EstiloNegocio estiloNegocio;
+    private readonly TipoEdicionNegocio tipoEdicionNegocio;
+
+    public DiscosController(
+        DiscoNegocio discoNegocio,
+        EstiloNegocio estiloNegocio,
+        TipoEdicionNegocio tipoEdicionNegocio)
+    {
+        this.discoNegocio = discoNegocio;
+        this.estiloNegocio = estiloNegocio;
+        this.tipoEdicionNegocio = tipoEdicionNegocio;
+    }
+
     // GET: Discos
     public IActionResult Index()
     {
-        AccesoDatosSQLITE accesoDatos = new AccesoDatosSQLITE();
-        DiscoNegocio negocio = new DiscoNegocio(accesoDatos);
-        List<Disco> discos = negocio.listar();
+        List<Disco> discos = discoNegocio.listar();
         return View(discos);
     }
 
@@ -26,11 +38,8 @@ public class DiscosController : Controller
     // GET: Discos/Create
     public IActionResult Create()
     {
-        AccesoDatosSQLITE accesoDatos = new AccesoDatosSQLITE();
-        EstiloNegocio negocioEstilos = new EstiloNegocio(accesoDatos);
-        TipoEdicionNegocio negocioTiposEdicion = new TipoEdicionNegocio(accesoDatos);
-        ViewBag.Estilos = new SelectList(negocioEstilos.listar(), "Id", "Descripcion");
-        ViewBag.TiposEdicion = new SelectList(negocioTiposEdicion.listar(), "Id", "Descripcion");
+        ViewBag.Estilos = new SelectList(estiloNegocio.listar(), "Id", "Descripcion");
+        ViewBag.TiposEdicion = new SelectList(tipoEdicionNegocio.listar(), "Id", "Descripcion");
         return View();
     }
 
@@ -45,9 +54,7 @@ public class DiscosController : Controller
             {
                 return View(nuevoDisco); // si hubo algun error de validacion, se vuelve a mostrar el formulario con los datos ingresados
             }
-            AccesoDatosSQLITE accesoDatos = new AccesoDatosSQLITE();
-            DiscoNegocio negocio = new DiscoNegocio(accesoDatos);
-            negocio.agregar(nuevoDisco);
+            discoNegocio.agregar(nuevoDisco);
             return RedirectToAction(nameof(Index));
         }
         catch
