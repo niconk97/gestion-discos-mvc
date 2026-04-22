@@ -29,10 +29,17 @@ public class DiscosController : Controller
     }
 
     // GET: Discos/Details/5
-    public IActionResult Details(int id)
+    public IActionResult Details(int? id)
     {
-        // TODO: Cargar el disco por id y devolver la vista de detalle
-        return View();
+
+        if(id == null)
+        {
+            return NotFound();
+        }
+
+        var disco = discoNegocio.listar().Find(p => p.Id == id);
+
+        return View(disco);
     }
 
     // GET: Discos/Create

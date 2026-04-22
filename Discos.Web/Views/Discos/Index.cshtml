@@ -44,12 +44,8 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Titulo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CantidadCanciones)
-            </td>
+            <td>@item.Titulo</td>
+            <td>@item.CantidadCanciones</td>
             <td>
                 @(item.FechaLanzamiento == DateTime.MinValue
                     ? "Sin fecha"
@@ -58,12 +54,8 @@
             <td>
                 <img src="@item.UrlTapa" alt="@item.Titulo" style="max-width: 100px; max-height: 100px;" />
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Estilo.Descripcion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TipoEdicion.Descripcion)
-            </td>
+            <td>@item.Estilo.Descripcion</td>
+            <td>@item.TipoEdicion.Descripcion</td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary">Modificar</a> |
                 <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-success">Detalle</a> |
